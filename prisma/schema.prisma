@@ -7,6 +7,49 @@ datasource db {
   provider = "postgresql"
 }
 
-model Test {
-  id Int @id @default(autoincrement())
+model Sport {
+  id     Int     @id @default(autoincrement())
+  name   String  @unique
+  teams  Team[]
+  events Event[]
+
+  @@map("sports")
+}
+
+model Venue {
+  id     Int     @id @default(autoincrement())
+  name   String
+  city   String
+  events Event[]
+
+  @@map("venues")
+}
+
+model Team {
+  id         Int     @id @default(autoincrement())
+  name       String
+  sportId    Int     @map("_sport_id")
+  sport      Sport   @relation(fields: [sportId], references: [id], map: "_fk_teams_sport")
+  homeEvents Event[] @relation("HomeTeam")
+  awayEvents Event[] @relation("AwayTeam")
+
+  @@map("teams")
+}
+
+model Event {
+  id          Int      @id @default(autoincrement())
+  event_date  DateTime @db.Date
+  event_time  String
+  description String?  @db.Text
+  sportId     Int      @map("_sport_id")
+  venueId     Int?     @map("_venue_id")
+  homeTeamId  Int      @map("_home_team_id")
+  awayTeamId  Int      @map("_away_team_id")
+
+  sport    Sport  @relation(fields: [sportId], references: [id], map: "_fk_events_sport")
+  venue    Venue? @relation(fields: [venueId], references: [id], map: "_fk_events_venue")
+  homeTeam Team   @relation("HomeTeam", fields: [homeTeamId], references: [id], map: "_fk_events_home_team")
+  awayTeam Team   @relation("AwayTeam", fields: [awayTeamId], references: [id], map: "_fk_events_away_team")
+
+  @@map("events")
 }
