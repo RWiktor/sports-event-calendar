@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateEventDto } from './dto/create-event.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 
@@ -6,11 +10,49 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class EventsService {
   constructor(private prisma: PrismaService) {}
 
-  async create(createEventDto: CreateEventDto) {
+  async create(dto: CreateEventDto) {
+    const { homeTeamId, awayTeamId, sportId, venueId } = dto;
+
+    if (homeTeamId === awayTeamId) {
+      throw new BadRequestException(
+        'Home team and Away team must be different.',
+      );
+    }
+
+    const [sport, homeTeam, awayTeam, venue] = await Promise.all([
+      this.prisma.sport.findUnique({ where: { id: sportId } }),
+      this.prisma.team.findUnique({ where: { id: homeTeamId } }),
+      this.prisma.team.findUnique({ where: { id: awayTeamId } }),
+      venueId
+        ? this.prisma.venue.findUnique({ where: { id: venueId } })
+        : Promise.resolve(null),
+    ]);
+
+    if (!sport) {
+      throw new NotFoundException(`Sport #${sportId} not found`);
+    }
+    if (!homeTeam || !awayTeam) {
+      throw new NotFoundException('One of the teams does not exist');
+    }
+    if (venueId && !venue) {
+      throw new NotFoundException('Venue does not exist');
+    }
+
+    if (homeTeam.sportId !== sportId || awayTeam.sportId !== sportId) {
+      throw new BadRequestException(
+        'Both teams must belong to the selected sport category',
+      );
+    }
+
     return this.prisma.event.create({
       data: {
-        ...createEventDto,
-        event_date: new Date(`${createEventDto.event_date}T00:00:00.000Z`),
+        event_date: new Date(`${dto.event_date}T00:00:00.000Z`),
+        event_time: dto.event_time,
+        description: dto.description,
+        sportId,
+        venueId,
+        homeTeamId,
+        awayTeamId,
       },
       include: {
         sport: true,
@@ -20,7 +62,6 @@ export class EventsService {
       },
     });
   }
-
   async findAll() {
     return this.prisma.$queryRaw`
     SELECT 
