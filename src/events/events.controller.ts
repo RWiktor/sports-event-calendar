@@ -23,6 +23,16 @@ export class EventsController {
     return this.eventsService.findAll();
   }
 
+  @Get('upcoming')
+  findUpcoming() {
+    return this.eventsService.findUpcoming();
+  }
+
+  @Get('past')
+  findPast() {
+    return this.eventsService.findPast();
+  }
+
   @Get(':id')
   findOne(@Param('id', ParseIntPipe) id: number) {
     return this.eventsService.findOne(id);

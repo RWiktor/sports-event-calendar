@@ -68,6 +68,7 @@ export class EventsService {
       e.id, 
       e.event_date AS "date", 
       e.event_time AS "time", 
+      e.description AS "description",
       s.name AS "sport",
       ht.name AS "home_team",
       at.name AS "away_team",
@@ -78,6 +79,48 @@ export class EventsService {
     INNER JOIN teams at ON e._away_team_id = at.id
     LEFT JOIN venues v ON e._venue_id = v.id
     ORDER BY e.event_date ASC;
+  `;
+  }
+
+  async findUpcoming() {
+    return this.prisma.$queryRaw`
+    SELECT 
+      e.id, 
+      e.event_date AS "date", 
+      e.event_time AS "time", 
+      e.description AS "description",
+      s.name AS "sport",
+      ht.name AS "home_team",
+      at.name AS "away_team",
+      v.name AS "venue"
+    FROM events e 
+    INNER JOIN sports s ON e._sport_id = s.id
+    INNER JOIN teams ht ON e._home_team_id = ht.id
+    INNER JOIN teams at ON e._away_team_id = at.id
+    LEFT JOIN venues v ON e._venue_id = v.id
+    WHERE e.event_date >= CURRENT_DATE
+    ORDER BY e.event_date ASC;
+  `;
+  }
+
+  async findPast() {
+    return this.prisma.$queryRaw`
+    SELECT 
+      e.id, 
+      e.event_date AS "date", 
+      e.event_time AS "time", 
+      e.description AS "description",
+      s.name AS "sport",
+      ht.name AS "home_team",
+      at.name AS "away_team",
+      v.name AS "venue"
+    FROM events e 
+    INNER JOIN sports s ON e._sport_id = s.id
+    INNER JOIN teams ht ON e._home_team_id = ht.id
+    INNER JOIN teams at ON e._away_team_id = at.id
+    LEFT JOIN venues v ON e._venue_id = v.id
+    WHERE e.event_date < CURRENT_DATE
+    ORDER BY e.event_date DESC;
   `;
   }
 
