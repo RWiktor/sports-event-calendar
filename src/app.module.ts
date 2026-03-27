@@ -4,6 +4,7 @@ import { EventsModule } from './events/events.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { SportsModule } from './sports/sports.module';
 import { TeamsModule } from './teams/teams.module';
+import { VenuesModule } from './venues/venues.module';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { TeamsModule } from './teams/teams.module';
     EventsModule,
     SportsModule,
     TeamsModule,
+    VenuesModule,
   ],
   controllers: [],
   providers: [],
