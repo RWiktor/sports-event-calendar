@@ -64,7 +64,7 @@ async function main() {
         awayTeamId: sturm.id,
       },
       {
-        event_date: new Date('2019-07-19'),
+        event_date: new Date('2026-07-19'),
         event_time: '20:45',
         description: 'Friday night fever',
         sportId: football.id,
@@ -73,7 +73,7 @@ async function main() {
         awayTeamId: rapid.id,
       },
       {
-        event_date: new Date('2019-10-23'),
+        event_date: new Date('2026-10-23'),
         event_time: '09:45',
         description: 'Ice Hockey derby',
         sportId: iceHockey.id,
