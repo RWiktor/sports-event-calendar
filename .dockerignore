@@ -1,0 +1,13 @@
+node_modules
+dist
+.git
+.gitignore
+.env
+.env.*
+coverage
+.DS_Store
+*.log
+terminals
+.cursor
+frontend
+AI_Reflection.txt
