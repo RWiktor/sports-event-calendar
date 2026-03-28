@@ -72,7 +72,8 @@ export class EventsService {
       s.name AS "sport",
       ht.name AS "home_team",
       at.name AS "away_team",
-      v.name AS "venue"
+      v.name AS "venue",
+      v.city AS "venue_city"
     FROM events e 
     INNER JOIN sports s ON e._sport_id = s.id
     INNER JOIN teams ht ON e._home_team_id = ht.id
@@ -92,7 +93,8 @@ export class EventsService {
       s.name AS "sport",
       ht.name AS "home_team",
       at.name AS "away_team",
-      v.name AS "venue"
+      v.name AS "venue",
+      v.city AS "venue_city"
     FROM events e 
     INNER JOIN sports s ON e._sport_id = s.id
     INNER JOIN teams ht ON e._home_team_id = ht.id
@@ -113,7 +115,8 @@ export class EventsService {
       s.name AS "sport",
       ht.name AS "home_team",
       at.name AS "away_team",
-      v.name AS "venue"
+      v.name AS "venue",
+      v.city AS "venue_city"
     FROM events e 
     INNER JOIN sports s ON e._sport_id = s.id
     INNER JOIN teams ht ON e._home_team_id = ht.id

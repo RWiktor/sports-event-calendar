@@ -33,7 +33,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const sports = await response.json();
     sportFilter.innerHTML =
       '<option value="">All sports</option>' +
-      sports.map((s) => `<option value="${s.name}">${s.name}</option>`).join('');
+      sports
+        .map((s) => `<option value="${s.name}">${s.name}</option>`)
+        .join('');
   };
 
   const loadEvents = async () => {
@@ -50,28 +52,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const formatDate = (date) => String(date).split('T')[0];
 
-  const escapeHtml = (s) =>
-    String(s)
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;');
+  const formatVenue = (event) => {
+    if (!event.venue) return '';
+    const line = event.venue_city
+      ? `${event.venue}, ${event.venue_city}`
+      : event.venue;
+    return `<div class="detail-item"><strong>🏟️ Venue:</strong> ${line}</div>`;
+  };
 
   const createEventCard = (event) => `
     <div class="event-card">
       <span class="event-sport">${event.sport}</span>
-      <h3 class="event-teams">${event.home_team} vs ${event.away_team}</h3>
+      <h3 class="event-teams">${event.home_team} <span class="event-vs">vs</span> ${event.away_team}</h3>
       <div class="event-details">
         <div class="detail-item"><strong>📅 Date:</strong> ${formatDate(event.date)}</div>
         <div class="detail-item"><strong>⏰ Time:</strong> ${event.time}</div>
-        ${
-          event.venue
-            ? `<div class="detail-item"><strong>🏟️ Venue:</strong> ${event.venue}</div>`
-            : ''
-        }
+        ${formatVenue(event)}
         ${
           event.description
-            ? `<p class="event-description">${escapeHtml(event.description)}</p>`
+            ? `<p class="event-description">${event.description}</p>`
             : ''
         }
       </div>
