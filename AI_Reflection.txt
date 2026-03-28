@@ -1,0 +1,9 @@
+AI Usage in the Project
+
+During the development process, AI tools were used to optimize work in the following areas:
+- Infrastructure and Database: Mapping the original relational design to a Prisma schema and generating a seeding script to populate the database.
+- Frontend: Enhancing the user interface and frontend logic. This allowed for a stronger focus on the backend architecture and business logic, while still providing a functional UI for demonstration.
+- Testing and Containerization: Drafting the initial structure for tests and creating the Docker configuration (Dockerfile and docker-compose.yml).
+- Bug fixing and consultations: Resolving issues, code consultations.
+
+IMPORTANT: Every piece of code generated with the help of AI was double-checked, tested, and manually verified. I did not include any solutions or patterns that I do not fully understand or cannot justify.
