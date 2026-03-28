@@ -1,4 +1,8 @@
-const API_BASE_URL = 'http://localhost:3000';
+const API_BASE_URL =
+  window.APP_CONFIG?.apiBaseUrl ||
+  (window.location.protocol === 'http:' || window.location.protocol === 'https:'
+    ? `${window.location.protocol}//${window.location.hostname}:3000`
+    : 'http://localhost:3000');
 
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('add-event-form');
